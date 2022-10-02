@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "kubeyaml",
+    srcs = ["kubeyaml.go"],
+    importpath = "github.com/z5labs/helm-knative/tools/ksplit/kubeyaml",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_spf13_afero//:afero"],
+)
