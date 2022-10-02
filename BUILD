@@ -1,6 +1,6 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
-# gazelle:prefix github.com/z5labs/helm-knative
+# gazelle:prefix github.com/z5labs/helm
 gazelle(name = "gazelle")
 
 gazelle(

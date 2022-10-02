@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/z5labs/helm-knative/tools/ksplit/kubeyaml"
+	"github.com/z5labs/helm/tools/ksplit/kubeyaml"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

@@ -1,4 +1,4 @@
-module github.com/z5labs/helm-knative
+module github.com/z5labs/helm
 
 go 1.19
 

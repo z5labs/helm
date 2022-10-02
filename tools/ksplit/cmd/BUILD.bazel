@@ -6,7 +6,7 @@ go_library(
         "cmd.go",
         "root.go",
     ],
-    importpath = "github.com/z5labs/helm-knative/tools/ksplit/cmd",
+    importpath = "github.com/z5labs/helm/tools/ksplit/cmd",
     visibility = ["//visibility:public"],
     deps = [
         "//tools/ksplit/kubeyaml",
