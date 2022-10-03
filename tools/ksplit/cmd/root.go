@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
@@ -58,7 +60,7 @@ var rootCmd = &cobra.Command{
 			zap.L().Fatal("unable to get absolute path for output directory", zap.Error(err))
 		}
 
-		b, err := readFromFileOrStdin(cmd, args[0])
+		b, err := readFile(cmd, args[0])
 		if err != nil {
 			zap.L().Fatal("failed to read source file", zap.Error(err))
 		}
@@ -85,9 +87,18 @@ func init() {
 	viper.BindPFlag("output-dir", rootCmd.Flags().Lookup("output-dir"))
 }
 
-func readFromFileOrStdin(cmd *cobra.Command, filename string) ([]byte, error) {
+func readFile(cmd *cobra.Command, filename string) ([]byte, error) {
 	if filename == "-" {
 		return io.ReadAll(cmd.InOrStdin())
+	}
+
+	if strings.HasPrefix(filename, "http") {
+		resp, err := http.Get(filename)
+		if err != nil {
+			return nil, err
+		}
+
+		return readAllAndClose(resp.Body)
 	}
 
 	absFileName, err := filepath.Abs(filename)
@@ -96,4 +107,10 @@ func readFromFileOrStdin(cmd *cobra.Command, filename string) ([]byte, error) {
 	}
 
 	return ioutil.ReadFile(absFileName)
+}
+
+func readAllAndClose(rc io.ReadCloser) ([]byte, error) {
+	defer rc.Close()
+
+	return io.ReadAll(rc)
 }

@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "templates_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/z5labs/helm/knative/serving/templates",
+    visibility = ["//visibility:private"],
+    deps = ["//tools/ksplit/cmd"],
+)
+
+go_binary(
+    name = "templates",
+    embed = [":templates_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "generate",
+    args = [
+        "https://github.com/knative/serving/releases/download/knative-v$(VERSION)/serving-core.yaml",
+    ],
+    embed = [":templates_lib"],
+    tags = ["manual"],
+    visibility = ["//visibility:public"],
+)
